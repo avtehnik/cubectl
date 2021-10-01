@@ -15,6 +15,24 @@ var vueApp = new Vue({
                     title: 'cp upload',
                     command: 'kubectl cp public/ ' + namespace + '/' + podId + ':/srv/project/public/'
                 }
+            },
+            function(podId, namespace) {
+                return {
+                    title: 'env',
+                    command: 'kubectl exec -n ' + namespace + ' -it ' + podId + '  env'
+                }
+            },
+            function(podId, namespace) {
+                return {
+                    title: 'logs',
+                    command: 'kubectl logs -f ' + podId + ' -n ' + namespace
+                }
+            },
+            function(podId, namespace) {
+                return {
+                    title: 'delete',
+                    command: 'kubectl delete pod ' + podId + ' -n ' + namespace
+                }
             }
         ]
     },
