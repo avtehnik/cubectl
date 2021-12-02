@@ -18,12 +18,17 @@
 <div id="vue-app" class="container">
 
   <h4>kubectl get pods -o wide --all-namespaces</h4>
-  <input class="form-control money" v-model="input" placeholder="nb-dev-backend    web-776594d74d-nfb85">
+  <input class="form-control" v-model="input" placeholder="nb-dev-backend    web-776594d74d-nfb85"/>
 
   <ul class="list-group">
-    <li class="list-group-item" v-for="(moneyItem, index) in commands">
-      <h3>{{moneyItem.title}}</h3>
-      {{moneyItem.command}}
+    <li class="list-group-item" v-for="(cmd, index) in commands">
+      <h3>{{cmd.title}}</h3>
+
+        <span v-for="param in cmd.params">
+            {{param}}: <input class="form-control-sm" v-model="commandTemplates[index]['params'][param]" v-bind:placeholder="param" />
+        </span>
+      <p/>
+      <div>{{cmd.command}}</div>
     </li>
   </ul>
 </div>

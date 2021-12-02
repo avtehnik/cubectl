@@ -1,54 +1,61 @@
-
 var vueApp = new Vue({
     el: '#vue-app',
     data: {
         input: "",
         commandTemplates: [
-            function(podId, namespace) {
-                return {
-                    title: 'bash',
-                    command: 'kubectl exec -n ' + namespace + ' -it ' + podId + '  bash'
+            {
+                title: 'bash',
+                params: {},
+                func: function(podId, namespace) {
+                    return 'kubectl exec -n ' + namespace + ' -it ' + podId + '  bash';
                 }
             },
-            function(podId, namespace) {
-                return {
-                    title: 'cp upload',
-                    command: 'kubectl cp public/ ' + namespace + '/' + podId + ':/srv/project/public/'
+            {
+                title: 'cp upload',
+                params: {'from': 'test.php','to': '/srv/project/public/'},
+                func: function(podId, namespace, values) {
+                    return 'kubectl cp ' + values['from'] + ' ' + namespace + '/' + podId + ': ' + values['to'];
                 }
             },
-            function(podId, namespace) {
-                return {
-                    title: 'env',
-                    command: 'kubectl exec -n ' + namespace + ' -it ' + podId + '  env'
+            {
+                title: 'env',
+                params: {},
+                func: function(podId, namespace) {
+                    return 'kubectl exec -n ' + namespace + ' -it ' + podId + '  env';
                 }
             },
-            function(podId, namespace) {
-                return {
-                    title: 'logs',
-                    command: 'kubectl logs -f ' + podId + ' -n ' + namespace
+            {
+                title: 'logs',
+                params: {},
+                func: function(podId, namespace) {
+                    return 'kubectl logs -f ' + podId + ' -n ' + namespace;
                 }
             },
-            function(podId, namespace) {
-                return {
-                    title: 'delete',
-                    command: 'kubectl delete pod ' + podId + ' -n ' + namespace
+            {
+                title: 'delete',
+                params: {},
+                func: function(podId, namespace) {
+                    return 'kubectl delete pod ' + podId + ' -n ' + namespace;
                 }
-            }
+            },
         ]
     },
-    methods: {
-    },
+    methods: {},
     beforeMount() {
         console.log('App mounted!');
-        if (localStorage.getItem('moneySeries')) this.moneySeries = JSON.parse(localStorage.getItem('moneySeries'));
     },
     computed: {
         commands: function() {
             let parts = this.input.split(/[ ]+/).map(function(item) {
                 return item.trim();
             })
-            return this.commandTemplates.map(function(func) {
-                return func(parts[1], parts[0])
+
+            return this.commandTemplates.map(function(template) {
+                return {
+                    title: template.title,
+                    params: Object.keys(template.params),
+                    command: template.func(parts[1], parts[0], template.params)
+                }
             })
         },
     }
