@@ -14,7 +14,21 @@ var vueApp = new Vue({
                 title: 'cp upload',
                 params: {'from': 'test.php','to': '/srv/project/public/'},
                 func: function(podId, namespace, values) {
-                    return 'kubectl cp ' + values['from'] + ' ' + namespace + '/' + podId + ': ' + values['to'];
+                    return 'kubectl cp ' + values['from'] + ' ' + namespace + '/' + podId + ':' + values['to'];
+                }
+            },
+            {
+                title: 'top',
+                params: {},
+                func: function(podId, namespace) {
+                    return 'kubectl top pod ' + podId + ' -n ' + namespace;
+                }
+            },
+            {
+                title: 'PodMetrics',
+                params: {},
+                func: function(podId, namespace) {
+                    return 'kubectl describe PodMetrics ' + podId + ' -n ' + namespace;
                 }
             },
             {
