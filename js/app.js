@@ -61,7 +61,12 @@ var vueApp = new Vue({
             },
         ]
     },
-    methods: {},
+    methods: {
+        copy:function(cmd){
+            console.log(cmd);
+            navigator.clipboard.writeText(cmd);
+        }
+    },
     beforeMount() {
         console.log('App mounted!');
     },
