@@ -25,6 +25,13 @@ var vueApp = new Vue({
                 }
             },
             {
+                title: 'describe pod',
+                params: {},
+                func: function(podId, namespace) {
+                    return 'kubectl describe pods ' + podId + ' -n ' + namespace;
+                }
+            },
+            {
                 title: 'PodMetrics',
                 params: {},
                 func: function(podId, namespace) {
