@@ -7,7 +7,7 @@ var vueApp = new Vue({
                 title: 'bash',
                 params: {},
                 func: function(podId, namespace) {
-                    return 'kubectl exec -n ' + namespace + ' -it ' + podId + '  bash';
+                    return 'kubectl exec -n ' + namespace + ' -it ' + podId + ' -- bash';
                 }
             },
             {
@@ -42,7 +42,7 @@ var vueApp = new Vue({
                 title: 'env',
                 params: {},
                 func: function(podId, namespace) {
-                    return 'kubectl exec -n ' + namespace + ' -it ' + podId + '  env';
+                    return 'kubectl exec -n ' + namespace + ' -it ' + podId + ' -- env';
                 }
             },
             {
