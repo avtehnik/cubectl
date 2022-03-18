@@ -59,6 +59,13 @@ var vueApp = new Vue({
                     return 'kubectl delete pod ' + podId + ' -n ' + namespace;
                 }
             },
+            {
+                title: 'deployments',
+                params: {},
+                func: function(podId, namespace) {
+                    return 'kubectl get deployment -n ' + namespace;
+                }
+            },
         ]
     },
     methods: {
