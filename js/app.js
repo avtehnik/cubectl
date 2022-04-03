@@ -11,7 +11,7 @@ var vueApp = new Vue({
                 }
             },
             {
-                title: 'cp upload',
+                title: 'upload file to pod',
                 params: {'from': 'test.php', 'to': '/srv/project/public/'},
                 func: function(podId, namespace, values) {
                     return 'kubectl cp ' + values['from'] + ' ' + namespace + '/' + podId + ':' + values['to'];
