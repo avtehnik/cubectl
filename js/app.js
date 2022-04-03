@@ -63,7 +63,7 @@ var vueApp = new Vue({
                 title: 'port-forward',
                 params: {'locahost-port': '5434', 'pod-port': '5434'},
                 func: function(podId, namespace, values) {
-                    return 'kubectl port-forward ' + podId + ' -n ' + namespace + ' ' + values['locahost-port'] + ' :' + values['pod-port']
+                    return 'kubectl port-forward ' + podId + ' -n ' + namespace + ' ' + values['locahost-port'] + ':' + values['pod-port']
                 }
             },
             {
@@ -77,12 +77,10 @@ var vueApp = new Vue({
     },
     methods: {
         copy: function(cmd) {
-            console.log(cmd);
             navigator.clipboard.writeText(cmd);
         }
     },
     beforeMount() {
-        console.log('App mounted!');
     },
     computed: {
         commands: function() {
