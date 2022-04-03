@@ -12,7 +12,7 @@ var vueApp = new Vue({
             },
             {
                 title: 'cp upload',
-                params: {'from': 'test.php','to': '/srv/project/public/'},
+                params: {'from': 'test.php', 'to': '/srv/project/public/'},
                 func: function(podId, namespace, values) {
                     return 'kubectl cp ' + values['from'] + ' ' + namespace + '/' + podId + ':' + values['to'];
                 }
@@ -60,6 +60,13 @@ var vueApp = new Vue({
                 }
             },
             {
+                title: 'port-forward',
+                params: {'locahost-port': '5434', 'pod-port': '5434'},
+                func: function(podId, namespace, values) {
+                    return 'kubectl port-forward ' + podId + ' -n ' + namespace + ' ' + values['locahost-port'] + ' :' + values['pod-port']
+                }
+            },
+            {
                 title: 'deployments',
                 params: {},
                 func: function(podId, namespace) {
@@ -69,7 +76,7 @@ var vueApp = new Vue({
         ]
     },
     methods: {
-        copy:function(cmd){
+        copy: function(cmd) {
             console.log(cmd);
             navigator.clipboard.writeText(cmd);
         }
