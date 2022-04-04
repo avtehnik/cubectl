@@ -68,9 +68,9 @@ var vueApp = new Vue({
             },
             {
                 title: 'deployments',
-                params: {},
-                func: function(podId, namespace) {
-                    return 'kubectl get deployment -n ' + namespace;
+                params: {'deployment': 'auth'},
+                func: function(podId, namespace, values) {
+                    return 'kubectl get deployment/' + values['deployment'] + ' -n ' + namespace +' -o yaml';
                 }
             },
         ]
