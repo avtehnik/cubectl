@@ -2,6 +2,8 @@ var vueApp = new Vue({
     el: '#vue-app',
     data: {
         input: "",
+        namespace: "",
+        podId: "",
         commandTemplates: [
             {
                 title: 'bash',
@@ -70,7 +72,7 @@ var vueApp = new Vue({
                 title: 'deployments',
                 params: {'deployment': 'auth'},
                 func: function(podId, namespace, values) {
-                    return 'kubectl get deployment/' + values['deployment'] + ' -n ' + namespace +' -o yaml';
+                    return 'kubectl get deployment/' + values['deployment'] + ' -n ' + namespace + ' -o yaml';
                 }
             },
         ]
@@ -78,21 +80,26 @@ var vueApp = new Vue({
     methods: {
         copy: function(cmd) {
             navigator.clipboard.writeText(cmd);
+        },
+        update: function() {
+            let parts = this.input.split(/[ ]+/).map(function(item) {
+                return item.trim();
+            })
+
+            this.namespace = parts[0];
+            this.podId = parts[1];
         }
     },
     beforeMount() {
     },
     computed: {
         commands: function() {
-            let parts = this.input.split(/[ ]+/).map(function(item) {
-                return item.trim();
-            })
-
+            var t = this;
             return this.commandTemplates.map(function(template) {
                 return {
                     title: template.title,
                     params: Object.keys(template.params),
-                    command: template.func(parts[1], parts[0], template.params)
+                    command: template.func(t.podId, t.namespace, template.params)
                 }
             })
         },
