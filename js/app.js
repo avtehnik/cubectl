@@ -20,6 +20,13 @@ var vueApp = new Vue({
                 }
             },
             {
+                title: 'download file from pod',
+                params: {'from': 'test.php', 'to': '.'},
+                func: function(podId, namespace, values) {
+                    return 'kubectl cp ' + namespace + '/' + podId + ':' + values['from'] + ' ' + values['to'];
+                }
+            },
+            {
                 title: 'top',
                 params: {},
                 func: function(podId, namespace) {
