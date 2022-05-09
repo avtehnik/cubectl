@@ -23,9 +23,9 @@
 
   <div class="pointer" v-on:click="copy('kubectl get deployments  --all-namespaces')">kubectl get deployments --all-namespaces</div>
   <div class="pointer" v-on:click="copy('kubectl get pods -o wide --all-namespaces')">kubectl get pods -o wide --all-namespaces</div>
-  <div class="pointer" v-on:click="copy('kubectl get pods -o wide -n development')">kubectl get pods -o wide -n development</div>
-  <div class="pointer" v-on:click="copy('kubectl get pods -o wide -n production')">kubectl get pods -o wide -n production</div>
-  <div class="pointer" v-on:click="copy('kubectl get pods -o wide -n staging')">kubectl get pods -o wide -n staging</div>
+  <div class="pointer" v-on:click="selectNS('kubectl get pods -o wide -n ', 'development')">kubectl get pods -o wide -n development</div>
+  <div class="pointer" v-on:click="selectNS('kubectl get pods -o wide -n ', 'production')">kubectl get pods -o wide -n production</div>
+  <div class="pointer" v-on:click="selectNS('kubectl get pods -o wide -n ', 'staging')">kubectl get pods -o wide -n staging</div>
   <br>
   line
   <input class="form-control" v-model="input" placeholder="namespace    pod-id" v-on:keyup="update" />

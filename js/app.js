@@ -88,6 +88,10 @@ var vueApp = new Vue({
         copy: function(cmd) {
             navigator.clipboard.writeText(cmd);
         },
+        selectNS: function(cmd, ns) {
+            this.namespace = ns;
+            navigator.clipboard.writeText(cmd + ns);
+        },
         update: function() {
             let parts = this.input.split(/[ ]+/).map(function(item) {
                 return item.trim();
