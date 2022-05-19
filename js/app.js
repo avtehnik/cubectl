@@ -27,6 +27,13 @@ var vueApp = new Vue({
                 }
             },
             {
+                title: 'curl from pod',
+                params: {'url': ''},
+                func: function(podId, namespace, values) {
+                    return 'kubectl exec -n ' + namespace + ' -it ' + podId + ' -- curl '+values['url'];
+                }
+            },
+            {
                 title: 'top',
                 params: {},
                 func: function(podId, namespace) {
