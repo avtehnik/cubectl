@@ -2,7 +2,7 @@ var vueApp = new Vue({
     el: '#vue-app',
     data: {
         input: "",
-        namespace: "",
+        namespace: "development",
         podId: "",
         commandTemplates: [
             {
