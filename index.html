@@ -40,11 +40,11 @@
   <ul class="list-group">
     <li class="list-group-item" v-for="(cmd, index) in commands">
       <h3>{{cmd.title}}</h3>
-
       <span v-for="param in cmd.params">
             {{param}}: <input class="form-control-sm" v-model="commandTemplates[index]['params'][param]" v-bind:placeholder="param"/>
       </span>
       <div class="pointer" v-on:click="copy(cmd.command)">{{cmd.command}}</div>
+      <div v-on:click="copy(command)" class="list-group-item" v-for="(command) in cmd.commands">{{command}}</div>
     </li>
   </ul>
 </div>

@@ -77,29 +77,40 @@ var vueApp = new Vue({
             },
             {
                 title: 'secrets list',
+                params: {'secret': ''},
                 func: function(podId, namespace) {
-                    return 'kubectl get secrets -n ' + namespace;
-                }
+                    return 'kubectl get secret -n ' + namespace;
+                },
+                commands:[
+                    function(podId, namespace, values) {
+                        return 'kubectl edit secret ' + values['secret'] + ' -n ' + namespace;
+                    },
+                    function(podId, namespace, values) {
+                        return 'kubectl get secret ' + values['secret'] + ' -n ' + namespace+ ' -o yaml';
+                    }
+                ]
+
             },
             {
-                title: 'deployments list',
-                func: function(podId, namespace) {
+                title: 'deployments',
+                params: {'deployment': 'auth'},
+                func: function(podId, namespace, values) {
                     return 'kubectl get deployments -n ' + namespace;
-                }
-            },
-            {
-                title: 'deployment',
-                params: {'deployment': 'auth'},
-                func: function(podId, namespace, values) {
-                    return 'kubectl get deployment/' + values['deployment'] + ' -n ' + namespace + ' -o yaml';
-                }
-            },
-            {
-                title: 'deployment edit',
-                params: {'deployment': 'auth'},
-                func: function(podId, namespace, values) {
-                    return 'kubectl edit deployment/' + values['deployment'] + ' -n ' + namespace;
-                }
+                },
+                commands:[
+                    function(podId, namespace, values) {
+                        return 'kubectl edit deployment/' + values['deployment'] + ' -n ' + namespace;
+                    },
+                    function(podId, namespace, values) {
+                        return 'kubectl rollout restarts deployment/' + values['deployment'] + ' -n ' + namespace;
+                    },
+                    function(podId, namespace, values) {
+                        return 'kubectl rollout  status -w deployment/' + values['deployment'] + ' -n ' + namespace;
+                    },
+                    function(podId, namespace, values) {
+                        return 'kubectl get deployment/' + values['deployment'] + ' -n ' + namespace + ' -o yaml';
+                    }
+                ]
             },
         ]
     },
@@ -129,7 +140,10 @@ var vueApp = new Vue({
                 return {
                     title: template.title,
                     params: template.hasOwnProperty('params') ? Object.keys(template.params) : [],
-                    command: template.func(t.podId, t.namespace, template.params)
+                    command: template.func(t.podId, t.namespace, template.params),
+                    commands: template.hasOwnProperty('commands') ? template.commands.map(function(func){
+                        return func(t.podId, t.namespace, template.params);
+                    }) : [],
                 }
             })
         },
