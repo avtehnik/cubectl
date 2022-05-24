@@ -81,12 +81,12 @@ var vueApp = new Vue({
                 func: function(podId, namespace) {
                     return 'kubectl get secret -n ' + namespace;
                 },
-                commands:[
+                commands: [
                     function(podId, namespace, values) {
                         return 'kubectl edit secret ' + values['secret'] + ' -n ' + namespace;
                     },
                     function(podId, namespace, values) {
-                        return 'kubectl get secret ' + values['secret'] + ' -n ' + namespace+ ' -o yaml';
+                        return 'kubectl get secret ' + values['secret'] + ' -n ' + namespace + ' -o yaml';
                     }
                 ]
 
@@ -97,7 +97,7 @@ var vueApp = new Vue({
                 func: function(podId, namespace, values) {
                     return 'kubectl get deployments -n ' + namespace;
                 },
-                commands:[
+                commands: [
                     function(podId, namespace, values) {
                         return 'kubectl edit deployment/' + values['deployment'] + ' -n ' + namespace;
                     },
@@ -141,7 +141,7 @@ var vueApp = new Vue({
                     title: template.title,
                     params: template.hasOwnProperty('params') ? Object.keys(template.params) : [],
                     command: template.func(t.podId, t.namespace, template.params),
-                    commands: template.hasOwnProperty('commands') ? template.commands.map(function(func){
+                    commands: template.hasOwnProperty('commands') ? template.commands.map(function(func) {
                         return func(t.podId, t.namespace, template.params);
                     }) : [],
                 }
@@ -149,3 +149,15 @@ var vueApp = new Vue({
         },
     }
 });
+
+document.body.addEventListener("keydown", function(e) {
+    if ((e.metaKey || e.ctrlKey) && e.code === 'KeyV') {
+        navigator.clipboard.readText()
+            .then(text => {
+                vueApp.podId = text;
+            })
+            .catch(err => {
+                console.error('Failed to read clipboard contents: ', err);
+            });
+    }
+}, false);
