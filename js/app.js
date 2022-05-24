@@ -83,10 +83,23 @@ var vueApp = new Vue({
                 }
             },
             {
-                title: 'deployments',
+                title: 'deployments list',
+                func: function(podId, namespace) {
+                    return 'kubectl get deployments -n ' + namespace;
+                }
+            },
+            {
+                title: 'deployment',
                 params: {'deployment': 'auth'},
                 func: function(podId, namespace, values) {
                     return 'kubectl get deployment/' + values['deployment'] + ' -n ' + namespace + ' -o yaml';
+                }
+            },
+            {
+                title: 'deployment',
+                params: {'deployment': 'auth'},
+                func: function(podId, namespace, values) {
+                    return 'kubectl edit deployment/' + values['deployment'] + ' -n ' + namespace;
                 }
             },
         ]
