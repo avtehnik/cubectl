@@ -109,6 +109,9 @@ var vueApp = new Vue({
                     },
                     function(podId, namespace, values) {
                         return 'kubectl get deployment/' + values['deployment'] + ' -n ' + namespace + ' -o yaml';
+                    },
+                    function(podId, namespace, values) {
+                        return 'kubectl scale deployment/' + values['deployment'] + ' -n ' + namespace + ' --replicas=7';
                     }
                 ]
             },
