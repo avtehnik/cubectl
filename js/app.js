@@ -83,6 +83,12 @@ var vueApp = new Vue({
                 }
             },
             {
+                title: 'secrets list',
+                func: function(podId, namespace) {
+                    return 'kubectl get secrets -n ' + namespace;
+                }
+            },
+            {
                 title: 'deployments list',
                 func: function(podId, namespace) {
                     return 'kubectl get deployments -n ' + namespace;
