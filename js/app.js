@@ -7,7 +7,6 @@ var vueApp = new Vue({
         commandTemplates: [
             {
                 title: 'bash',
-                params: {},
                 func: function(podId, namespace) {
                     return 'kubectl exec -n ' + namespace + ' -it ' + podId + ' -- bash';
                 }
@@ -30,47 +29,41 @@ var vueApp = new Vue({
                 title: 'curl from pod',
                 params: {'url': ''},
                 func: function(podId, namespace, values) {
-                    return 'kubectl exec -n ' + namespace + ' -it ' + podId + ' -- curl '+values['url'];
+                    return 'kubectl exec -n ' + namespace + ' -it ' + podId + ' -- curl ' + values['url'];
                 }
             },
             {
                 title: 'top',
-                params: {},
                 func: function(podId, namespace) {
                     return 'kubectl top pod ' + podId + ' -n ' + namespace;
                 }
             },
             {
                 title: 'describe pod',
-                params: {},
                 func: function(podId, namespace) {
                     return 'kubectl describe pods ' + podId + ' -n ' + namespace;
                 }
             },
             {
                 title: 'PodMetrics',
-                params: {},
                 func: function(podId, namespace) {
                     return 'kubectl describe PodMetrics ' + podId + ' -n ' + namespace;
                 }
             },
             {
                 title: 'env',
-                params: {},
                 func: function(podId, namespace) {
                     return 'kubectl exec -n ' + namespace + ' -it ' + podId + ' -- env';
                 }
             },
             {
                 title: 'logs',
-                params: {},
                 func: function(podId, namespace) {
                     return 'kubectl logs -f ' + podId + ' -n ' + namespace;
                 }
             },
             {
                 title: 'delete',
-                params: {},
                 func: function(podId, namespace) {
                     return 'kubectl delete pod ' + podId + ' -n ' + namespace;
                 }
@@ -102,7 +95,7 @@ var vueApp = new Vue({
                 }
             },
             {
-                title: 'deployment',
+                title: 'deployment edit',
                 params: {'deployment': 'auth'},
                 func: function(podId, namespace, values) {
                     return 'kubectl edit deployment/' + values['deployment'] + ' -n ' + namespace;
@@ -135,7 +128,7 @@ var vueApp = new Vue({
             return this.commandTemplates.map(function(template) {
                 return {
                     title: template.title,
-                    params: Object.keys(template.params),
+                    params: template.hasOwnProperty('params') ? Object.keys(template.params) : [],
                     command: template.func(t.podId, t.namespace, template.params)
                 }
             })
