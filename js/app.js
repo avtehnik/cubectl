@@ -157,7 +157,7 @@ document.body.addEventListener("keydown", function(e) {
     if ((e.metaKey || e.ctrlKey) && e.code === 'KeyV') {
         navigator.clipboard.readText()
             .then(text => {
-                vueApp.podId = text;
+                // vueApp.podId = text;
             })
             .catch(err => {
                 console.error('Failed to read clipboard contents: ', err);
