@@ -115,6 +115,9 @@ var vueApp = new Vue({
                     },
                     function(podId, namespace, values) {
                         return 'kubectl scale deployment/' + values['deployment'] + ' -n ' + namespace + ' --replicas=7';
+                    },
+                    function(podId, namespace, values) {
+                        return 'kubectl delete deployment ' + values['deployment'] + ' -n ' + namespace ;
                     }
                 ]
             },
