@@ -87,6 +87,9 @@ var vueApp = new Vue({
                     },
                     function(podId, namespace, values) {
                         return 'kubectl get secret ' + values['secret'] + ' -n ' + namespace + ' -o yaml';
+                    },
+                    function(podId, namespace, values) {
+                        return 'kubectl delete secret ' + values['secret'] + ' -n ' + namespace;
                     }
                 ]
 
