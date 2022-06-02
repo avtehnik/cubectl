@@ -120,6 +120,9 @@ var vueApp = new Vue({
                     },
                     function(podId, namespace, values) {
                         return 'kubectl delete deployment ' + values['deployment'] + ' -n ' + namespace;
+                    },
+                    function(podId, namespace, values) {
+                        return 'kubectl describe deployment ' + values['deployment'] + ' -n ' + namespace;
                     }
                 ]
             },
