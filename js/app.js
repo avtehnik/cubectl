@@ -47,6 +47,13 @@ var vueApp = new Vue({
                 }
             },
             {
+                title: 'set namespace',
+                params: {'url': ''},
+                func: function(podId, namespace, values) {
+                    return 'kubectl config set-context --current --namespace=' + namespace;
+                }
+            },
+            {
                 title: 'upload file to pod',
                 params: {'from': 'test.php', 'to': '/srv/project/public/'},
                 func: function(podId, namespace, values) {
@@ -125,6 +132,21 @@ var vueApp = new Vue({
                 commands: [
                     function(podId, namespace, values) {
                         return 'kubectl get service/' + values['service'] + ' -n ' + namespace + ' -o yaml';
+                    }
+                ]
+            },
+            {
+                title: 'Namespace',
+                params: {'namespace': 'development'},
+                func: function(podId, namespace, values) {
+                    return 'kubectl get namespace';
+                },
+                commands: [
+                    function(podId, namespace, values) {
+                        return 'kubectl create namespace ' + values['namespace'];
+                    },
+                    function(podId, namespace, values) {
+                        return 'kubectl delete namespace ' + values['namespace'];
                     }
                 ]
             }
