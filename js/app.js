@@ -75,6 +75,18 @@ var vueApp = new Vue({
                 }
             },
             {
+                title: 'Horizontal pod autoscaler',
+                func: function(podId, namespace, values) {
+                    return 'kubectl get hpa -n ' + namespace
+                }
+            },
+            {
+                title: 'Replica set',
+                func: function(podId, namespace, values) {
+                    return 'kubectl get rs -n ' + namespace
+                }
+            },
+            {
                 title: 'Secrets',
                 params: {'secret': ''},
                 func: function(podId, namespace) {
@@ -113,7 +125,7 @@ var vueApp = new Vue({
                         return 'kubectl get deployment/' + values['deployment'] + ' -n ' + namespace + ' -o yaml';
                     },
                     function(podId, namespace, values) {
-                        return 'kubectl get deployment/' + values['deployment'] + ' -n ' + namespace + ' -o json | jq ".spec.template.spec.containers[0].image"';
+                        return 'kubectl get deployments -n ' + namespace + ' -o json | jq " .items[].spec.template.spec.containers[0] | {name: .name, image:.image}"';
                     },
                     function(podId, namespace, values) {
                         return 'kubectl scale deployment/' + values['deployment'] + ' -n ' + namespace + ' --replicas=7';
@@ -150,6 +162,27 @@ var vueApp = new Vue({
                     },
                     function(podId, namespace, values) {
                         return 'kubectl delete namespace ' + values['namespace'];
+                    }
+                ]
+            },
+            {
+                title: 'Jobs',
+                params: {'job': ''},
+                func: function(podId, namespace, values) {
+                    return 'kubectl get namespace';
+                },
+                commands: [
+                    function(podId, namespace, values) {
+                        return 'kubectl get jobs -n ' + namespace;
+                    },
+                    function(podId, namespace, values) {
+                        return 'kubectl get jobs -n ' + namespace + ' -o json | jq " .items[].spec.template.spec.containers[0] | {name: .name, image:.image}"';
+                    },
+                    function(podId, namespace, values) {
+                        return 'kubectl get job ' + values['job'] + '  -n ' + namespace;
+                    },
+                    function(podId, namespace, values) {
+                        return 'kubectl edit job ' + values['job'] + '  -n ' + namespace;
                     }
                 ]
             }
