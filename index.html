@@ -21,6 +21,7 @@
 <div id="vue-app" class="container">
   <h1>kubectl commands helper</h1>
 
+  <div class="pointer" v-on:click="copy('kubectl get namespaces')">kubectl get namespaces</div>
   <div class="pointer" v-on:click="copy('kubectl get deployments  --all-namespaces')">kubectl get deployments --all-namespaces</div>
   <div class="pointer" v-on:click="copy('kubectl get pods -o wide --all-namespaces')">kubectl get pods -o wide --all-namespaces</div>
   <div class="pointer" v-on:click="selectNS('kubectl get pods -o wide -n ', 'development')">kubectl get pods -o wide -n development</div>
