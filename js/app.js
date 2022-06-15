@@ -19,23 +19,22 @@ var vueApp = new Vue({
                     },
                     function(podId, namespace) {
                         return 'kubectl top pod ' + podId + ' -n ' + namespace;
-                    }
-                    ,
+                    },
                     function(podId, namespace) {
                         return 'kubectl describe pods ' + podId + ' -n ' + namespace;
-                    }
-                    ,
+                    },
                     function(podId, namespace) {
                         return 'kubectl describe PodMetrics ' + podId + ' -n ' + namespace;
-                    }
-                    , function(podId, namespace) {
+                    },
+                    function(podId, namespace) {
                         return 'kubectl exec -n ' + namespace + ' -it ' + podId + ' -- env';
-                    }
-                    ,
+                    },
                     function(podId, namespace) {
                         return 'kubectl logs -f ' + podId + ' -n ' + namespace;
+                    },
+                    function(podId, namespace) {
+                        return 'kubectl get pod ' + podId + ' -n ' + namespace+ ' -o yaml';
                     }
-
                 ]
 
             },
@@ -107,7 +106,7 @@ var vueApp = new Vue({
             },
             {
                 title: 'Deployments',
-                params: {'deployment': 'auth'},
+                params: {'deployment': 'auth', 'image': ''},
                 func: function(podId, namespace, values) {
                     return 'kubectl get deployments -n ' + namespace;
                 },
@@ -131,6 +130,9 @@ var vueApp = new Vue({
                         return 'kubectl scale deployment/' + values['deployment'] + ' -n ' + namespace + ' --replicas=7';
                     },
                     function(podId, namespace, values) {
+                        return 'kubectl set image deployment/' + values['deployment'] + '  ' + values['deployment'] + '=' + values['image'] + ' -n ' + namespace;
+                    },
+                    function(podId, namespace, values) {
                         return 'kubectl delete deployment ' + values['deployment'] + ' -n ' + namespace;
                     },
                     function(podId, namespace, values) {
@@ -147,6 +149,18 @@ var vueApp = new Vue({
                 commands: [
                     function(podId, namespace, values) {
                         return 'kubectl get service/' + values['service'] + ' -n ' + namespace + ' -o yaml';
+                    }
+                ]
+            },
+            {
+                title: 'Persistent Volumes',
+                params: {'volume': ''},
+                func: function(podId, namespace, values) {
+                    return 'kubectl get pvc -n ' + namespace;
+                },
+                commands: [
+                    function(podId, namespace, values) {
+                        return 'kubectl get pvc ' + values['volume'] + ' -n ' + namespace + ' -o yaml';
                     }
                 ]
             },
