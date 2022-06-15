@@ -177,6 +177,18 @@ var vueApp = new Vue({
                 ]
             },
             {
+                title: 'Config Map',
+                params: {'configmap': ''},
+                func: function(podId, namespace, values) {
+                    return 'kubectl get configmap -n ' + namespace;
+                },
+                commands: [
+                    function(podId, namespace, values) {
+                        return 'kubectl get configmap ' + values['configmap'] + ' -n ' + namespace + ' -o yaml';
+                    }
+                ]
+            },
+            {
                 title: 'Namespace',
                 params: {'namespace': 'development'},
                 func: function(podId, namespace, values) {
