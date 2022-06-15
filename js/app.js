@@ -153,14 +153,26 @@ var vueApp = new Vue({
                 ]
             },
             {
-                title: 'Persistent Volumes',
-                params: {'volume': ''},
+                title: 'Persistent Volume Claim',
+                params: {'volumeClaim': ''},
                 func: function(podId, namespace, values) {
                     return 'kubectl get pvc -n ' + namespace;
                 },
                 commands: [
                     function(podId, namespace, values) {
-                        return 'kubectl get pvc ' + values['volume'] + ' -n ' + namespace + ' -o yaml';
+                        return 'kubectl get pvc ' + values['volumeClaim'] + ' -n ' + namespace + ' -o yaml';
+                    }
+                ]
+            },
+            {
+                title: 'Persistent Volume',
+                params: {'volume': ''},
+                func: function(podId, namespace, values) {
+                    return 'kubectl get pv -n ' + namespace;
+                },
+                commands: [
+                    function(podId, namespace, values) {
+                        return 'kubectl get pv ' + values['volume'] + ' -n ' + namespace + ' -o yaml';
                     }
                 ]
             },
