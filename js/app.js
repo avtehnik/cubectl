@@ -33,7 +33,7 @@ var vueApp = new Vue({
                         return 'kubectl logs -f ' + podId + ' -n ' + namespace;
                     },
                     function(podId, namespace) {
-                        return 'kubectl get pod ' + podId + ' -n ' + namespace+ ' -o yaml';
+                        return 'kubectl get pod ' + podId + ' -n ' + namespace + ' -o yaml';
                     }
                 ]
 
