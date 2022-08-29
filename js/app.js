@@ -112,6 +112,9 @@ var vueApp = new Vue({
                 },
                 commands: [
                     function(podId, namespace, values) {
+                        return 'kubectl exec -it deployment/' + values['deployment'] + ' -n ' + namespace +' -- bash';
+                    },
+                    function(podId, namespace, values) {
                         return 'kubectl edit deployment/' + values['deployment'] + ' -n ' + namespace;
                     },
                     function(podId, namespace, values) {
