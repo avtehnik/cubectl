@@ -156,6 +156,18 @@ var vueApp = new Vue({
                 ]
             },
             {
+                title: 'Events',
+                params: {'service': 'auth'},
+                func: function(podId, namespace, values) {
+                    return 'kubectl get events --field-selector type!=Normal -A --sort-by=\'.metadata.creationTimestamp\' -n ' + namespace;
+                },
+                // commands: [
+                //     function(podId, namespace, values) {
+                //         return 'kubectl get service/' + values['service'] + ' -n ' + namespace + ' -o yaml';
+                //     }
+                // ]
+            },
+            {
                 title: 'Persistent Volume Claim',
                 params: {'volumeClaim': ''},
                 func: function(podId, namespace, values) {
