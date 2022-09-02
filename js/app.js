@@ -118,7 +118,7 @@ var vueApp = new Vue({
                         return 'kubectl edit deployment/' + values['deployment'] + ' -n ' + namespace;
                     },
                     function(podId, namespace, values) {
-                        return 'kubectl rollout restarts deployment/' + values['deployment'] + ' -n ' + namespace;
+                        return 'kubectl rollout restart deployment/' + values['deployment'] + ' -n ' + namespace;
                     },
                     function(podId, namespace, values) {
                         return 'kubectl rollout  status -w deployment/' + values['deployment'] + ' -n ' + namespace;
