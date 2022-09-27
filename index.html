@@ -27,7 +27,7 @@
   <div class="pointer" v-on:click="selectNS('kubectl get pods -o wide -n ', 'development')">kubectl get pods -o wide -n development</div>
   <div class="pointer" v-on:click="selectNS('kubectl get pods -o wide -n ', 'production')">kubectl get pods -o wide -n production</div>
   <div class="pointer" v-on:click="selectNS('kubectl get pods -o wide -n ', 'staging')">kubectl get pods -o wide -n staging</div>
-  <div class="pointer" v-on:click="copy('apt update && apt install -y nano curl')">curl nano</div>
+  <div class="pointer" v-on:click="copy('apt update && apt install -y nano curl procps')">curl nano procps</div>
   <br>
   line
   <input class="form-control" v-model="input" placeholder="namespace    pod-id" v-on:keyup="update" />
