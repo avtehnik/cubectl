@@ -75,9 +75,15 @@ var vueApp = new Vue({
             },
             {
                 title: 'Horizontal pod autoscaler',
+                params: {'secret': ''},
                 func: function(podId, namespace, values) {
                     return 'kubectl get hpa -n ' + namespace
-                }
+                },
+                commands: [
+                    function(podId, namespace, values) {
+                        return 'kubectl edit hpa ' + values['secret'] + ' -n ' + namespace;
+                    }
+                ]
             },
             {
                 title: 'Replica set',
@@ -222,12 +228,9 @@ var vueApp = new Vue({
                 title: 'Jobs',
                 params: {'job': ''},
                 func: function(podId, namespace, values) {
-                    return 'kubectl get namespace';
+                    return 'kubectl get jobs -n ' + namespace;
                 },
                 commands: [
-                    function(podId, namespace, values) {
-                        return 'kubectl get jobs -n ' + namespace;
-                    },
                     function(podId, namespace, values) {
                         return 'kubectl get jobs -n ' + namespace + ' -o json | jq " .items[].spec.template.spec.containers[0] | {name: .name, image:.image}"';
                     },
@@ -236,6 +239,30 @@ var vueApp = new Vue({
                     },
                     function(podId, namespace, values) {
                         return 'kubectl edit job ' + values['job'] + '  -n ' + namespace;
+                    }
+                ]
+            },
+            {
+                title: 'CronJob',
+                params: {'cronjob': ''},
+                func: function(podId, namespace, values) {
+                    return 'kubectl get cronjob -n ' + namespace;
+                },
+                commands: [
+                    function(podId, namespace, values) {
+                        return 'kubectl get cronjob ' + values['cronjob'] + '  -n ' + namespace;
+                    },
+                    function(podId, namespace, values) {
+                        return 'kubectl get cronjob ' + values['cronjob'] + '  -n ' + namespace;
+                    },
+                    function(podId, namespace, values) {
+                        return 'kubectl patch cronjobs '+values['cronjob']+' -p \'{"spec" : {"suspend" : true }}\'  -n ' + namespace;
+                    },
+                    function(podId, namespace, values) {
+                        return 'kubectl patch cronjobs '+values['cronjob']+' -p \'{"spec" : {"suspend" : false }}\'  -n ' + namespace;
+                    },
+                    function(podId, namespace, values) {
+                        return 'kubectl edit cronjob ' + values['cronjob'] + '  -n ' + namespace;
                     }
                 ]
             }
