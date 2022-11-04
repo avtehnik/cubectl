@@ -238,7 +238,13 @@ var vueApp = new Vue({
                         return 'kubectl get job ' + values['job'] + '  -n ' + namespace;
                     },
                     function(podId, namespace, values) {
+                        return 'kubectl delete job ' + values['job'] + '  -n ' + namespace;
+                    },
+                    function(podId, namespace, values) {
                         return 'kubectl edit job ' + values['job'] + '  -n ' + namespace;
+                    },
+                    function(podId, namespace, values) {
+                        return 'kubectl patch job ' + values['job'] + ' --type=strategic --patch \'{"spec":{"suspend":true}}\'  -n ' + namespace;
                     }
                 ]
             },
