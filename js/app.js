@@ -1,3 +1,20 @@
+const cyrb53 = (str, seed = 0) => {
+    let h1 = 0xdeadbeef ^ seed,
+        h2 = 0x41c6ce57 ^ seed;
+    for (let i = 0, ch; i < str.length; i++) {
+        ch = str.charCodeAt(i);
+        h1 = Math.imul(h1 ^ ch, 2654435761);
+        h2 = Math.imul(h2 ^ ch, 1597334677);
+    }
+
+    h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+    h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+
+    return 4294967296 * (2097151 & h2) + (h1 >>> 0);
+};
+
+
+
 var vueApp = new Vue({
     el: '#vue-app',
     data: {
@@ -7,6 +24,7 @@ var vueApp = new Vue({
         commandTemplates: [
             {
                 title: 'Pods',
+                id: self.crypto.randomUUID(),
                 func: function(podId, namespace) {
                     return 'kubectl get pods -o wide -n ' + namespace;
                 },
@@ -40,6 +58,7 @@ var vueApp = new Vue({
             },
             {
                 title: 'curl from pod',
+                id: self.crypto.randomUUID(),
                 params: {'url': ''},
                 func: function(podId, namespace, values) {
                     return 'kubectl exec -n ' + namespace + ' -it ' + podId + ' -- curl ' + values['url'];
@@ -47,6 +66,7 @@ var vueApp = new Vue({
             },
             {
                 title: 'set namespace',
+                id: self.crypto.randomUUID(),
                 params: {'url': ''},
                 func: function(podId, namespace, values) {
                     return 'kubectl config set-context --current --namespace=' + namespace;
@@ -54,6 +74,7 @@ var vueApp = new Vue({
             },
             {
                 title: 'upload file to pod',
+                id: self.crypto.randomUUID(),
                 params: {'from': 'test.php', 'to': '/srv/project/public/'},
                 func: function(podId, namespace, values) {
                     return 'kubectl cp ' + values['from'] + ' ' + namespace + '/' + podId + ':' + values['to'];
@@ -61,13 +82,15 @@ var vueApp = new Vue({
             },
             {
                 title: 'download file from pod',
+                id: self.crypto.randomUUID(),
                 params: {'from': 'test.php', 'to': '.'},
                 func: function(podId, namespace, values) {
                     return 'kubectl cp ' + namespace + '/' + podId + ':' + values['from'] + ' ' + values['to'];
                 }
             },
             {
-                title: 'port-forward',
+                title: 'port forward',
+                id: self.crypto.randomUUID(),
                 params: {'locahost-port': '5434', 'pod-port': '5434'},
                 func: function(podId, namespace, values) {
                     return 'kubectl port-forward ' + podId + ' -n ' + namespace + ' ' + values['locahost-port'] + ':' + values['pod-port']
@@ -75,6 +98,7 @@ var vueApp = new Vue({
             },
             {
                 title: 'Horizontal pod autoscaler',
+                id: self.crypto.randomUUID(),
                 params: {'secret': ''},
                 func: function(podId, namespace, values) {
                     return 'kubectl get hpa -n ' + namespace
@@ -87,12 +111,14 @@ var vueApp = new Vue({
             },
             {
                 title: 'Replica set',
+                id: self.crypto.randomUUID(),
                 func: function(podId, namespace, values) {
                     return 'kubectl get rs -n ' + namespace
                 }
             },
             {
                 title: 'Secrets',
+                id: self.crypto.randomUUID(),
                 params: {'secret': ''},
                 func: function(podId, namespace) {
                     return 'kubectl get secret -n ' + namespace;
@@ -112,6 +138,7 @@ var vueApp = new Vue({
             },
             {
                 title: 'Deployments',
+                id: self.crypto.randomUUID(),
                 params: {'deployment': 'auth', 'image': ''},
                 func: function(podId, namespace, values) {
                     return 'kubectl get deployments -n ' + namespace;
@@ -125,6 +152,9 @@ var vueApp = new Vue({
                     },
                     function(podId, namespace, values) {
                         return 'kubectl rollout restart deployment/' + values['deployment'] + ' -n ' + namespace;
+                    },
+                    function(podId, namespace, values) {
+                        return 'kubectl logs deployment/' + values['deployment'] + ' -n ' + namespace;
                     },
                     function(podId, namespace, values) {
                         return 'kubectl rollout  status -w deployment/' + values['deployment'] + ' -n ' + namespace;
@@ -151,6 +181,7 @@ var vueApp = new Vue({
             },
             {
                 title: 'Services',
+                id: self.crypto.randomUUID(),
                 params: {'service': 'auth'},
                 func: function(podId, namespace, values) {
                     return 'kubectl get services -n ' + namespace;
@@ -163,6 +194,7 @@ var vueApp = new Vue({
             },
             {
                 title: 'Events',
+                id: self.crypto.randomUUID(),
                 params: {'service': 'auth'},
                 func: function(podId, namespace, values) {
                     return 'kubectl get events --field-selector type!=Normal -A --sort-by=\'.metadata.creationTimestamp\' -n ' + namespace;
@@ -175,6 +207,7 @@ var vueApp = new Vue({
             },
             {
                 title: 'Persistent Volume Claim',
+                id: self.crypto.randomUUID(),
                 params: {'volumeClaim': ''},
                 func: function(podId, namespace, values) {
                     return 'kubectl get pvc -n ' + namespace;
@@ -187,6 +220,7 @@ var vueApp = new Vue({
             },
             {
                 title: 'Persistent Volume',
+                id: self.crypto.randomUUID(),
                 params: {'volume': ''},
                 func: function(podId, namespace, values) {
                     return 'kubectl get pv -n ' + namespace;
@@ -199,6 +233,7 @@ var vueApp = new Vue({
             },
             {
                 title: 'Config Map',
+                id: self.crypto.randomUUID(),
                 params: {'configmap': ''},
                 func: function(podId, namespace, values) {
                     return 'kubectl get configmap -n ' + namespace;
@@ -211,6 +246,7 @@ var vueApp = new Vue({
             },
             {
                 title: 'Namespace',
+                id: self.crypto.randomUUID(),
                 params: {'namespace': 'development'},
                 func: function(podId, namespace, values) {
                     return 'kubectl get namespace';
@@ -226,6 +262,7 @@ var vueApp = new Vue({
             },
             {
                 title: 'Jobs',
+                id: self.crypto.randomUUID(),
                 params: {'job': ''},
                 func: function(podId, namespace, values) {
                     return 'kubectl get jobs -n ' + namespace;
@@ -250,6 +287,7 @@ var vueApp = new Vue({
             },
             {
                 title: 'CronJob',
+                id: self.crypto.randomUUID(),
                 params: {'cronjob': ''},
                 func: function(podId, namespace, values) {
                     return 'kubectl get cronjob -n ' + namespace;
@@ -298,6 +336,7 @@ var vueApp = new Vue({
             var t = this;
             return this.commandTemplates.map(function(template) {
                 return {
+                    id: template.id,
                     title: template.title,
                     params: template.hasOwnProperty('params') ? Object.keys(template.params) : [],
                     command: template.func(t.podId, t.namespace, template.params),

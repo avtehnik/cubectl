@@ -14,12 +14,27 @@
       .container {
           margin-top: 100px;
       }
+
+      .menu{
+          position:fixed ;
+          top: 10px;
+          left: 10px;
+      }
+
   </style>
 
 </head>
 <body>
 <div id="vue-app" class="container">
   <h1>kubectl commands helper</h1>
+
+  <div class="menu" >
+
+    <li class="list-group-item" v-for="(cmd, index) in commands">
+      <a :href="'#'+cmd.id">{{cmd.title}}</a>
+    </li>
+
+  </div>
 
   <div class="pointer" v-on:click="copy('kubectl get namespaces')">kubectl get namespaces</div>
   <div class="pointer" v-on:click="copy('kubectl get deployments  --all-namespaces')">kubectl get deployments --all-namespaces</div>
@@ -40,8 +55,8 @@
   <br>
 
   <ul class="list-group">
-    <li class="list-group-item" v-for="(cmd, index) in commands">
-      <h3>{{cmd.title}}</h3>
+    <li :id="cmd.id" class="list-group-item" v-for="(cmd, index) in commands">
+      <h3 >{{cmd.title}}</h3>
       <span v-for="param in cmd.params">
             {{param}}: <input class="form-control-sm" v-model="commandTemplates[index]['params'][param]" v-bind:placeholder="param"/>
       </span>
