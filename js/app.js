@@ -57,7 +57,7 @@ var vueApp = new Vue({
 
             },
             {
-                title: 'curl from pod',
+                title: 'Curl from pod',
                 id: self.crypto.randomUUID(),
                 params: {'url': ''},
                 func: function(podId, namespace, values) {
@@ -65,7 +65,7 @@ var vueApp = new Vue({
                 }
             },
             {
-                title: 'set namespace',
+                title: 'Set namespace',
                 id: self.crypto.randomUUID(),
                 params: {'url': ''},
                 func: function(podId, namespace, values) {
@@ -73,7 +73,7 @@ var vueApp = new Vue({
                 }
             },
             {
-                title: 'upload file to pod',
+                title: 'Upload file to pod',
                 id: self.crypto.randomUUID(),
                 params: {'from': 'test.php', 'to': '/srv/project/public/'},
                 func: function(podId, namespace, values) {
@@ -81,7 +81,7 @@ var vueApp = new Vue({
                 }
             },
             {
-                title: 'download file from pod',
+                title: 'Download file from pod',
                 id: self.crypto.randomUUID(),
                 params: {'from': 'test.php', 'to': '.'},
                 func: function(podId, namespace, values) {
@@ -89,7 +89,7 @@ var vueApp = new Vue({
                 }
             },
             {
-                title: 'port forward',
+                title: 'Port forward',
                 id: self.crypto.randomUUID(),
                 params: {'locahost-port': '5434', 'pod-port': '5434'},
                 func: function(podId, namespace, values) {
