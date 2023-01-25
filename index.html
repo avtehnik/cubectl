@@ -26,13 +26,16 @@
 </head>
 <body>
 <div id="vue-app" class="container">
-  <h1>kubectl commands helper</h1>
+  <h1 id="home" >kubectl commands helper</h1>
 
   <div class="menu" >
 
-    <li class="list-group-item" v-for="(cmd, index) in commands">
-      <a :href="'#'+cmd.id">{{cmd.title}}</a>
-    </li>
+      <div class="list-group-item">
+        <a href="#home">Head</a>
+      </div>
+      <div class="list-group-item" v-for="(cmd, index) in commands">
+        <a :href="'#'+cmd.id">{{cmd.title}}</a>
+      </div>
 
   </div>
 
@@ -43,6 +46,8 @@
   <div class="pointer" v-on:click="selectNS('kubectl get pods -o wide -n ', 'production')">kubectl get pods -o wide -n production</div>
   <div class="pointer" v-on:click="selectNS('kubectl get pods -o wide -n ', 'staging')">kubectl get pods -o wide -n staging</div>
   <div class="pointer" v-on:click="copy('apt update && apt install -y nano curl procps iputils-ping procps')">curl nano procps iputils-ping procps</div>
+  <div class="pointer" v-on:click="copy('curl &quot;https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip&quot; -o &quot;awscliv2.zip&quot;')">curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"</div>
+  <div class="pointer" v-on:click="copy('unzip awscliv2.zip && ./aws/install')">unzip awscliv2.zip && ./aws/install</div>
   <br>
   line
   <input class="form-control" v-model="input" placeholder="namespace    pod-id" v-on:keyup="update" />
